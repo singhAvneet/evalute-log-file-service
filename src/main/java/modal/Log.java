@@ -1,14 +1,5 @@
 package modal;
 
-
-import jdk.jfr.Timestamp;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.regex.Pattern;
-
 public class Log {
 
 
@@ -22,14 +13,11 @@ public class Log {
     private String ph;//:  path
     private byte dp;//:  disposition (valid values: MALICIOUS (1), CLEAN (2), UNKNOWN (3))
 
-    private boolean isValid=false,isNotEmpty=false;
+//    private boolean isValid=false,isNotEmpty=false;
 
     public boolean isValid(){
-         isNotEmpty= getPh()!=null || getBg()!=null || getDp()!=0 ||
-                getNm()!=null || getPt()!=0 || getTs()!=0 ||
-                getUu()!=null || getSha()!=null || getSi()!=null;
 
-        isValid=String.valueOf(getTs()).matches("[0-9]{10}")
+        return String.valueOf(getTs()).matches("[0-9]{10}")
                 &&  String.valueOf(getPt()).matches("^\\d+$")
                 &&  getSi().matches("^#?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$")
                 &&  getUu().matches("^#?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$")
@@ -41,7 +29,13 @@ public class Log {
                 && getDp()==2;
 
 
-        return isValid && isNotEmpty;
+
+    }
+
+    public boolean inNotEmpty(){
+        return         getPh()!=null || getBg()!=null || getDp()!=0 ||
+                getNm()!=null || getPt()!=0 || getTs()!=0 ||
+                getUu()!=null || getSha()!=null || getSi()!=null;
     }
 
     public long getTs() {

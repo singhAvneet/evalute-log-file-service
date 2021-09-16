@@ -2,7 +2,9 @@ package main;
 
 import com.google.gson.Gson;
 import modal.Log;
+import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.Null;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -12,9 +14,10 @@ public class main {
 
     public static void main( String[] args ) throws IOException {
         String line;
-        Log logEntry = new Log();
+        int count;
+        Log logEntry ;
         Gson gson = new Gson();
-        Map<String, Integer> uniqueList=new HashMap<String, Integer>();
+        Map<String, Integer> uniqueList=new HashMap<>();
        BufferedReader br = new BufferedReader(new FileReader(new File("log.dat")));
 
 
@@ -22,11 +25,18 @@ public class main {
                 try{
                     logEntry = gson.fromJson(line, Log.class);
 
-                    if(logEntry.isValid()){
-                        System.out.println(logEntry.isValid());
-                    }else{
-                        System.out.println("JSON entries in line "+line+" is invalid.");break;
+
+                    if(logEntry.inNotEmpty()){
+                        count = uniqueList.get(logEntry.getNm())== null ?0:uniqueList.get(logEntry.getNm());
+                        uniqueList.put(logEntry.getNm(), ++count);
                     }
+
+
+                    if(!logEntry.isValid()) {
+                        System.out.println("JSON entries in line " + line + " is invalid.");
+                    }
+
+
                 }
                 catch(Exception e){
                     System.out.println("Invalid Log File");
@@ -38,7 +48,7 @@ public class main {
             }
 
 
-
+        System.out.println(uniqueList.toString());
 
     }
 
