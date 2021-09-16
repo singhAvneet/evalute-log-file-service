@@ -12,12 +12,14 @@ import java.util.*;
 public class main {
 
 
+
     public static void main( String[] args ) throws IOException {
+
         String line;
-        int count;
-        Log logEntry ;
+        Log logEntry;
+        boolean isValid = false;
         Gson gson = new Gson();
-        Map<String, Integer> uniqueList=new HashMap<>();
+        Set<String> filenameList=new HashSet<>();
        BufferedReader br = new BufferedReader(new FileReader(new File("log.dat")));
 
 
@@ -25,30 +27,38 @@ public class main {
                 try{
                     logEntry = gson.fromJson(line, Log.class);
 
-
-                    if(logEntry.inNotEmpty()){
-                        count = uniqueList.get(logEntry.getNm())== null ?0:uniqueList.get(logEntry.getNm());
-                        uniqueList.put(logEntry.getNm(), ++count);
-                    }
-
-
-                    if(!logEntry.isValid()) {
+                    if(logEntry.isValid() && logEntry.inNotEmpty()) {
+                        filenameList.add(logEntry.getNm());
+                        isValid=true;
+                    }else {
                         System.out.println("JSON entries in line " + line + " is invalid.");
+                        isValid=false;
+                        break;
                     }
-
-
                 }
                 catch(Exception e){
                     System.out.println("Invalid Log File");
-                    System.out.println("Error in "+line+". Error: "+ e.getMessage());break;
+                    System.out.println("Error in "+line+". Error: "+ e.getMessage());
+                    isValid=false;
+                    break;
                 }
-
-
-
             }
 
+        if(isValid)
+        {
+            Map<String, Integer> uniqueList=new HashMap<>();
+            int count;
+            for (String fnm: filenameList ) {
+               line=fnm.substring(fnm.indexOf(".")+1);
+                count = uniqueList.get(line)== null ?0:uniqueList.get(line);
+                uniqueList.put(line, ++count);
+            }
 
-        System.out.println(uniqueList.toString());
+            uniqueList.forEach((k,v)->{
+                System.out.println(k +": "+v);
+            });
+
+        }
 
     }
 
