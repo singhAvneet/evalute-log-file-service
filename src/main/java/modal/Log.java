@@ -14,6 +14,9 @@ public class Log{
 
     public boolean isValid(){
 
+       String phs=getPh().substring(getPh().lastIndexOf("/"));
+        phs=getPh().contains(".")?phs.substring(phs.lastIndexOf("/"),phs.indexOf(".")):phs;
+
         return String.valueOf(getTs()).matches("[+]?[0-9]{10}")
                 &&  String.valueOf(getPt()).matches("[+]?[0-9]{2}")
                 &&  getSi().matches("^#?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$")
@@ -23,9 +26,8 @@ public class Log{
                 &&  getNm().matches(".*")
                 &&  getPh().matches("^[^/]*/[^/].*$")
                 &&  String.valueOf(getDp()).matches("[+]?[1-3]{1}")
-                && getNm().contains(getPh().substring(getPh().lastIndexOf("/")+1))
-                && getDp()==2;
-
+                &&  phs.replace("/","").equals(getNm().substring(0,getNm().indexOf(".")))
+                &&  getDp()==2;
     }
 
     public boolean inNotEmpty(){
