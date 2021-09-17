@@ -24,10 +24,11 @@ public class Log{
                 &&  getPh().matches("^[^/]*/[^/].*$")
                 &&  String.valueOf(getDp()).matches("[+]?[1-3]{1}")
                 && getDp()==2;
+
     }
 
     public boolean inNotEmpty(){
-        return         getPh()!=null || getBg()!=null || getDp()!=0 ||
+        return  getPh()!=null || getBg()!=null || getDp()!=0 ||
                 getNm()!=null || getPt()!=0 || getTs()!=0 ||
                 getUu()!=null || getSha()!=null || getSi()!=null;
     }
