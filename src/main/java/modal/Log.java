@@ -1,7 +1,6 @@
 package modal;
 
-public class Log {
-
+public class Log{
 
     private long ts;//:  timestamp
     private int pt;//:  processing time
@@ -13,23 +12,18 @@ public class Log {
     private String ph;//:  path
     private byte dp;//:  disposition (valid values: MALICIOUS (1), CLEAN (2), UNKNOWN (3))
 
-//    private boolean isValid=false,isNotEmpty=false;
-
     public boolean isValid(){
 
-        return String.valueOf(getTs()).matches("[0-9]{10}")
-                &&  String.valueOf(getPt()).matches("^\\d+$")
+        return String.valueOf(getTs()).matches("[+]?[0-9]{10}")
+                &&  String.valueOf(getPt()).matches("[+]?[0-9]{2}")
                 &&  getSi().matches("^#?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$")
                 &&  getUu().matches("^#?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$")
                 &&  getBg().matches("^#?([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})$")
                 &&  getSha().matches("^#?([a-f0-9]{64})$")
                 &&  getNm().matches(".*")
                 &&  getPh().matches("^[^/]*/[^/].*$")
-                &&  String.valueOf(getDp()).matches("[1-3]{1}")
+                &&  String.valueOf(getDp()).matches("[+]?[1-3]{1}")
                 && getDp()==2;
-
-
-
     }
 
     public boolean inNotEmpty(){

@@ -1,13 +1,10 @@
 package main;
 
-import com.google.gson.Gson;
-import modal.Log;
-import org.springframework.lang.Nullable;
 
-import javax.validation.constraints.Null;
+import modal.LogFile;
 import java.io.*;
-import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class main {
 
@@ -15,50 +12,26 @@ public class main {
 
     public static void main( String[] args ) throws IOException {
 
-        String line;
-        Log logEntry;
-        boolean isValid = false;
-        Gson gson = new Gson();
-        Set<String> filenameList=new HashSet<>();
-       BufferedReader br = new BufferedReader(new FileReader(new File("log.dat")));
+        String extName;
+        LogFile logFile=new LogFile();
+        BufferedReader brLogs = new BufferedReader(new FileReader(new File("log.dat")));
 
+            if(logFile.isValid(brLogs))
+            {
+                Map<String, Integer> uniqueExtList=new HashMap<>();
+                int count;
 
-            while ((line = br.readLine()) != null) {
-                try{
-                    logEntry = gson.fromJson(line, Log.class);
-
-                    if(logEntry.isValid() && logEntry.inNotEmpty()) {
-                        filenameList.add(logEntry.getNm());
-                        isValid=true;
-                    }else {
-                        System.out.println("JSON entries in line " + line + " is invalid.");
-                        isValid=false;
-                        break;
-                    }
+                for (String fnm: logFile.getFilenameList() ) {
+                    extName=fnm.substring(fnm.indexOf(".")+1);
+                    count = uniqueExtList.get(extName)== null ?0:uniqueExtList.get(extName);
+                    uniqueExtList.put(extName, ++count);
                 }
-                catch(Exception e){
-                    System.out.println("Invalid Log File");
-                    System.out.println("Error in "+line+". Error: "+ e.getMessage());
-                    isValid=false;
-                    break;
-                }
+
+                uniqueExtList.forEach((k,v)->{
+                    System.out.println(k +": "+v);
+                });
+
             }
-
-        if(isValid)
-        {
-            Map<String, Integer> uniqueList=new HashMap<>();
-            int count;
-            for (String fnm: filenameList ) {
-               line=fnm.substring(fnm.indexOf(".")+1);
-                count = uniqueList.get(line)== null ?0:uniqueList.get(line);
-                uniqueList.put(line, ++count);
-            }
-
-            uniqueList.forEach((k,v)->{
-                System.out.println(k +": "+v);
-            });
-
-        }
 
     }
 
