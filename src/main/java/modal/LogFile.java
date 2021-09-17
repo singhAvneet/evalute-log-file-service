@@ -27,7 +27,7 @@ public class LogFile {
                 if(isValid=logEntry.isValid() && logEntry.inNotEmpty()) {
                     filenameList.add(logEntry.getNm());
                 }else {
-                    System.out.println("JSON entries in line " + line + " is invalid.");
+                    System.out.println("JSON entries in line " + line +" is invalid.");
                     isValid=false;
                     break;
                 }

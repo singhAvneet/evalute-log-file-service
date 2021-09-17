@@ -23,6 +23,7 @@ public class Log{
                 &&  getNm().matches(".*")
                 &&  getPh().matches("^[^/]*/[^/].*$")
                 &&  String.valueOf(getDp()).matches("[+]?[1-3]{1}")
+                && getNm().contains(getPh().substring(getPh().lastIndexOf("/")+1))
                 && getDp()==2;
 
     }
